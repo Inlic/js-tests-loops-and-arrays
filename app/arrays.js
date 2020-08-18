@@ -4,6 +4,9 @@
 // output: ['is', 'a', 'split', 'sentence.', 'This']
 
 function rearranger(arr) {
+    first = arr.shift()
+    arr.push(first)
+    return arr
 }
 
 
@@ -16,8 +19,23 @@ function rearranger(arr) {
 // output: 42
 
 function largestNum(arr) {
+    let max = {
+        [arr[0]]: 1
+    }
+    for(let i = 1; i < arr.length; i++){
+        const number = arr[i];
+        if(number == Object.keys(max)[0]){
+            max[Object.keys(max)[0]]+=1
+        }
+        else if(number > Object.keys(max)[0]){
+            max = {
+                [number]: 1
+            }
+        }
+    }
+    return max
 }
-
+// Uses type coercion to coax values.  Explicit typing might be better.
 
 // ------------------------------------------
 
@@ -28,6 +46,12 @@ function largestNum(arr) {
 // output: [16, 8, 4, 28]
 
 function elemsTimesLength(arr) {
+    m_array = []
+    for(let i = 0; i < arr.length; i++){
+        let number = arr[i];
+        m_array.push(number * arr.length) 
+    }
+    return m_array
 }
 
 
@@ -41,8 +65,16 @@ function elemsTimesLength(arr) {
 // Primitive data types - https://developer.mozilla.org/en-US/docs/Glossary/Primitive
 
 function arrayFlattener(arr) {
-
+    flat_arr = arr.flat(Infinity)
+    primitive_arr = []
+    for(let i = 0; i < flat_arr.length; i++){
+        let item = flat_arr[i];
+        if(typeof(item) == "string" || typeof(item) == "number" || typeof(item) == "bigint" || typeof(item) == "boolean" || typeof(item) == "symbol")
+            primitive_arr.push(item)
+    }
+    return primitive_arr      
 }
+
 
 
 // ------------------------------------------
@@ -74,9 +106,17 @@ let flights = [{
 }]
 
 
-function flightCost(destination, firstClass) {
-    //***hint: use the find method***
-
+function flightCost(destination, firstClass=false) {
+    let price
+    for(let i = 0; i < flights.length; i++){
+        let flight = flights[i];
+        if(flight.to.toLowerCase() == destination.toLowerCase() && firstClass){
+            price = flight.prices.firstClass
+        } else if(flight.to.toLowerCase() == destination.toLowerCase() && !firstClass){
+            price = flight.prices.standard
+        }
+    }
+    return price
 }
 
 
@@ -97,7 +137,16 @@ let staff = [{ id: 1, name: 'Jon' }, { id: 2, name: 'Yuli' }, { id: 21, name: 'P
 { id: 881, name: 'Paul' }, { id: 0, name: 'Jon' }, { id: 999, name: 'Timma' }]
 
 function findById(id) {
-
+   let err_object = {
+       error: "No user with that id."
+   }
+   for(let i = 0; i < staff.length; i++){
+       let member = staff[i]
+       if(member.id == id){
+           return member
+       }
+   }
+   return err_object
 }
 
 
@@ -124,4 +173,8 @@ let theBand = {
 }
 
 function bandMemberDetails(name) {
+    for(let i = 0; i < theBand.members.length; i++)
+        if(theBand.members[i].name.startsWith(name)){
+            return theBand.members[i].name+" is in the band and plays the "+theBand.members[i].instrument
+        }
 }
